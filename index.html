@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<link rel="stylesheet" href="bower_components/foundation/css/foundation.min.css">
+	<link rel="stylesheet" type="text/css" href="./dist/css/main.css">
+</head>
+<body>
+	<div class="row">
+		<div class="columns large-4">
+			<form 
+					id="myForm"
+				>
+				<input type="file" name="userPhoto" id="userPhoto"/>
+				<input type="button" onClick="uploadFile()" value="Upload Image" name="submit">
+				
+			</form>
+		</div>
+		<div class="columns large-6" id="img-list">
+		</div>
+	</div>
+	<script src="./dist/js/bundle.js"></script>
+	<script>
+		function uploadFile(){
+			var host = 'http://localhost:8999';
+			var headers = new Headers();
+			var form = new FormData(document.getElementById('myForm'));
+			fetch(`${host}/upload`,{
+				method: 'post',
+				body: form
+			}).then(res =>{
+				return res.json()
+			}).then(item => {
+				var img = document.createElement('img');
+				img.src = item.src;
+				img.style.width = '60px';
+				document.getElementById('img-list').appendChild(img);
+			})
+		}
+	</script>
+</body>
+</html>
